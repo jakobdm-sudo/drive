@@ -16,7 +16,24 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-const mockData = [
+type FileItem = {
+  id: number;
+  name: string;
+  type: "file";
+  size: string;
+};
+
+type FolderItem = {
+  id: number;
+  name: string;
+  type: "folder";
+  items: number;
+  children: FileItem[];
+};
+
+type Item = FileItem | FolderItem;
+
+const mockData: Item[] = [
   {
     id: 1,
     name: "Documents",
@@ -96,8 +113,9 @@ export default function HomePage() {
     setBreadcrumbs(breadcrumbs.slice(0, index + 1));
   };
 
-  const currentItems = currentFolder
-    ? mockData.find((item) => item.id === currentFolder)?.children || []
+  const currentItems: Item[] = currentFolder
+    ? (mockData.find((item) => item.id === currentFolder) as FolderItem)
+        ?.children || []
     : mockData;
 
   return (
