@@ -90,10 +90,12 @@ export default function HomePage() {
   };
 
   const handleBreadcrumbClick = (index: number) => {
-    setCurrentFolder(breadcrumbs[index].id);
+    const crumb = breadcrumbs[index];
+    if (!crumb) return;
+    setCurrentFolder(crumb.id ?? null);
     setBreadcrumbs(breadcrumbs.slice(0, index + 1));
   };
-  
+
   const currentItems = currentFolder
     ? mockData.find((item) => item.id === currentFolder)?.children || []
     : mockData;
