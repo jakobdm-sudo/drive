@@ -4,6 +4,7 @@ import Button from "~/components/button";
 import Link from "next/link";
 import {
   Folder,
+  Menu,
   File,
   Home,
   Star,
@@ -15,7 +16,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState } from "react";
-import { ThemeToggle } from "~/components/theme-toggle"
+import { ThemeToggle } from "~/components/theme-toggle";
 
 type FileItem = {
   id: number;
@@ -98,6 +99,8 @@ const mockData: Item[] = [
 export default function HomePage() {
   const [currentFolder, setCurrentFolder] = useState<number | null>(null);
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const [breadcrumbs, setBreadcrumbs] = useState<
     Array<{ id: number | null; name: string }>
   >([{ id: null, name: "My Drive" }]);
@@ -105,6 +108,9 @@ export default function HomePage() {
   const handleOpen = (folderId: number, folderName: string) => {
     setCurrentFolder(folderId);
     setBreadcrumbs([...breadcrumbs, { id: folderId, name: folderName }]);
+  };
+  const handleopenSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   const handleBreadcrumbClick = (index: number) => {
@@ -121,47 +127,55 @@ export default function HomePage() {
 
   return (
     <main className="h-screen bg-background text-foreground">
-      <div className="flex flex-row">
-        <aside className="w-1/4 p-4">
-          <Button
-            name="JakoDrive"
-            hasLogo={true}
-            logo={<Cloud />}
-            className="mb-4"
-          ></Button>
-          <nav className="space-y-6">
-            <Link
-              href="#"
-              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
-            >
-              <Home />
-              Home
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
-            >
-              <Star />
-              Starred
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
-            >
-              <Clock />
-              Recents
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
-            >
-              <Trash />
-              Trash
-            </Link>
-          </nav>
+      <div className="flex flex-col md:flex-row">
+        <aside className="hidden p-4 md:block md:w-1/4">
+          <div className="flex flex-col items-center justify-start">
+            <Button
+              name={"JakoDrive"}
+              hasLogo={true}
+              logo={<Cloud />}
+              className="mb-4 bg-primary transition-all"
+            />
+            <nav className="flex flex-col gap-4 space-y-6">
+              <Link
+                href="#"
+                className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
+              >
+                <Home />
+                <span>Home</span>
+              </Link>
+              <Link
+                href="#"
+                className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
+              >
+                <Star />
+                <span>Starred</span>
+              </Link>
+              <Link
+                href="#"
+                className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
+              >
+                <Clock />
+                <span>Recents</span>
+              </Link>
+              <Link
+                href="#"
+                className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
+              >
+                <Trash />
+                <span>Trash</span>
+              </Link>
+            </nav>
+          </div>
         </aside>
-        <div className="w-3/4 p-4">
+        <div className="w-full p-4 md:w-3/4">
           <div className="flex items-center justify-between pb-6">
+            <button
+              className="block md:hidden"
+              onClick={() => handleopenSidebar()}
+            >
+              <Menu />
+            </button>
             <h1 className="text-2xl font-bold">My Drive</h1>
             <div className="flex items-center gap-2">
               <ThemeToggle />
@@ -169,10 +183,64 @@ export default function HomePage() {
                 name="Upload"
                 hasLogo={true}
                 logo={<Upload />}
-                className="bg-secondary hover:bg-accent"
+                className="hover:bg-primary-hover bg-primary"
               />
             </div>
           </div>
+          <div
+            className={`fixed left-0 right-0 top-16 z-50 transform bg-background p-4 transition-all duration-300 ease-in-out ${
+              isSidebarOpen
+                ? "translate-y-0 opacity-100"
+                : "pointer-events-none -translate-y-full opacity-0"
+            } md:hidden`}
+          >
+            <div
+              className={`flex flex-col ${isSidebarOpen ? "animate-slide-down" : ""} `}
+            >
+              <Button
+                name={"JakoDrive"}
+                hasLogo={true}
+                logo={<Cloud />}
+                className="mb-4 bg-primary transition-all"
+              />
+              <nav className="flex flex-col gap-4">
+                <Link
+                  href="#"
+                  className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
+                >
+                  <Home />
+                  <span>Home</span>
+                </Link>
+                <Link
+                  href="#"
+                  className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
+                >
+                  <Star />
+                  <span>Starred</span>
+                </Link>
+                <Link
+                  href="#"
+                  className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
+                >
+                  <Clock />
+                  <span>Recents</span>
+                </Link>
+                <Link
+                  href="#"
+                  className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
+                >
+                  <Trash />
+                  <span>Trash</span>
+                </Link>
+              </nav>
+            </div>
+          </div>
+          {isSidebarOpen && (
+            <div
+              className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm md:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
           <div className="pb-6">
             <ol className="inline-flex items-center space-x-1 md:space-x-3">
               {breadcrumbs.map((crumb, index) => (
