@@ -15,6 +15,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState } from "react";
+import { ThemeToggle } from "~/components/theme-toggle"
 
 type FileItem = {
   id: number;
@@ -119,7 +120,7 @@ export default function HomePage() {
     : mockData;
 
   return (
-    <main className="h-screen bg-gray-900 text-gray-100">
+    <main className="h-screen bg-background text-foreground">
       <div className="flex flex-row">
         <aside className="w-1/4 p-4">
           <Button
@@ -131,28 +132,28 @@ export default function HomePage() {
           <nav className="space-y-6">
             <Link
               href="#"
-              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-gray-700"
+              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
             >
               <Home />
               Home
             </Link>
             <Link
               href="#"
-              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-gray-700"
+              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
             >
               <Star />
               Starred
             </Link>
             <Link
               href="#"
-              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-gray-700"
+              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
             >
               <Clock />
               Recents
             </Link>
             <Link
               href="#"
-              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-gray-700"
+              className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
             >
               <Trash />
               Trash
@@ -162,12 +163,15 @@ export default function HomePage() {
         <div className="w-3/4 p-4">
           <div className="flex items-center justify-between pb-6">
             <h1 className="text-2xl font-bold">My Drive</h1>
-            <Button
-              name="Upload"
-              hasLogo={true}
-              logo={<Upload />}
-              className="bg-gray-700 hover:bg-gray-600"
-            ></Button>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <Button
+                name="Upload"
+                hasLogo={true}
+                logo={<Upload />}
+                className="bg-secondary hover:bg-accent"
+              />
+            </div>
           </div>
           <div className="pb-6">
             <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -184,16 +188,16 @@ export default function HomePage() {
               ))}
             </ol>
           </div>
-          <div className="grid-row-4 grid gap-4 rounded-md bg-gray-800 p-4 shadow">
-            <div className="flex items-center justify-between px-2 text-sm text-gray-400">
+          <div className="grid-row-4 grid gap-4 rounded-md bg-sidebar p-4 shadow">
+            <div className="flex items-center justify-between px-2 text-sm text-muted-foreground">
               <p className="">Name</p>
               <p className="pr-8">Size</p>
             </div>
             <ul>
               {currentItems.map((item) => (
-                <button
+                <div
                   key={item.id}
-                  className="flex w-full items-center justify-between gap-2 rounded-md px-2 py-2 transition-colors hover:bg-gray-700"
+                  className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 transition-colors hover:bg-secondary"
                   onClick={() =>
                     item.type === "folder"
                       ? handleOpen(item.id, item.name)
@@ -202,19 +206,19 @@ export default function HomePage() {
                 >
                   <div className="flex items-center gap-2">
                     {item.type === "folder" ? (
-                      <Folder className="text-blue-500" />
+                      <Folder className="text-primary" />
                     ) : (
-                      <File className="text-gray-400" />
+                      <File className="text-muted-foreground" />
                     )}
                     {item.name}
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-400">
+                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     {item.type === "folder" ? item.items + " items" : item.size}
                     <button>
-                      <MoreVertical className="text-white" />
+                      <MoreVertical className="text-foreground" />
                     </button>
                   </div>
-                </button>
+                </div>
               ))}
             </ul>
           </div>
