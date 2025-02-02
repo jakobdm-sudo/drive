@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "singlestore",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "1",
+      "when": 1738531837543,
+      "tag": "0000_rare_patriot",
+      "breakpoints": true
+    }
+  ]
+}
