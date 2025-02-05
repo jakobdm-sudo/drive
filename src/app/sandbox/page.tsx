@@ -6,30 +6,29 @@ export default function SandboxPage() {
   return (
     <div className="flex flex-col gap-4">
       <h1>Sandbox</h1>
-      Seed Function{" "}
       <form
         action={async () => {
-          //"we need the client to be able to call this function"
-          //here: whatever is onsubmit will be called on server
           "use server";
-          const folderInsert = await db.insert(folders).values(
-            mockFolders.map((folder, index) => ({
-              id: index + 1,
-              name: folder.name,
-              parent: index !== 0 ? 2 : 1,
-              items: folder.items,
+          // First clear existing data
+          await db.delete(folders);
+          await db.delete(files);
 
+          // Insert folders with correct parent relationships
+          const folderInsert = await db.insert(folders).values(
+            mockFolders.map((folder) => ({
+              id: folder.id, // Use the exact IDs from mock data
+              name: folder.name,
+              parent: folder.parent === "root" ? null : parseInt(folder.parent), // Convert string parent to number
             })),
           );
 
-          //insert files
+          // Insert files with correct parent relationships
           const fileInsert = await db.insert(files).values(
-            mockFiles.map((file, index) => ({
-              id: index + 1,
+            mockFiles.map((file) => ({
+              id: file.id,
               name: file.name,
-              parent: (index % 3) + 1,
-              size: 600,
-
+              parent: parseInt(file.parent), // Convert string parent to number
+              size: parseInt(file.size) || 1024, // Convert "1.2MB" to number or use default
               url: file.url,
             })),
           );
@@ -38,7 +37,6 @@ export default function SandboxPage() {
         }}
       >
         <button type="submit">Seed</button>
-
       </form>
     </div>
   );

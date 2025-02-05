@@ -25,10 +25,6 @@ export default function DriveContents(props: {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 
-  const handleFolderClick = (folderId: number) => {
-    setCurrentFolder(folderId);
-  };
-
   const breadcrumbs = useMemo(() => {
     // Array to store the folder path from root to current location
     const crumbs = [];
@@ -181,21 +177,21 @@ export default function DriveContents(props: {
           )}
           <div className="pb-6">
             <div className="flex items-center">
-              <button
-                onClick={() => setCurrentFolder(1)}
+              <Link
+                href="/f/0"
                 className="text-primary hover:text-primary-hover"
               >
                 My Drive
-              </button>
+              </Link>
               {breadcrumbs.map((folder) => (
                 <div key={folder.id} className="flex items-center">
                   <ChevronRight className="mx-1 h-4 w-4" />
-                  <button
-                    onClick={() => handleFolderClick(folder.id)}
+                  <Link
+                    href={`/f/${folder.id}`}
                     className="text-primary hover:text-primary-hover"
                   >
                     {folder.name}
-                  </button>
+                  </Link>
                 </div>
               ))}
             </div>
@@ -210,7 +206,6 @@ export default function DriveContents(props: {
                 <FolderRow
                   key={folder.id}
                   folder={folder}
-                  handleOpen={() => handleFolderClick(folder.id)}
                 />
               ))}
               {props.files.map((file) => (
