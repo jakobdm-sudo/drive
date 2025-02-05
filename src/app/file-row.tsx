@@ -1,56 +1,65 @@
 import { type FileItem, type FolderItem } from "~/lib/mock-data";
 import Link from "next/link";
 import { Folder, File, MoreVertical } from "lucide-react";
+import type { files, folders } from "~/server/db/schema";
 
-interface ItemRowProps {
-  item: FolderItem;
-  handleOpen: (id: number, name: string) => void;
-}
 
-export function FileRow({ item }: { item: FileItem }) {
+export function FileRow(props: { file: typeof files.$inferSelect }) {
   return (
     <div
-      key={item.id}
+      key={props.file.id}
+
       className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 transition-colors hover:bg-secondary"
     >
       <div className="flex items-center gap-2">
         <a
-          href={item.url}
+          href={props.file.url}
           className="flex items-center text-gray-100 hover:text-blue-400"
           target="_blank" //opens in new tab
+
         ></a>
         <File className="text-muted-foreground" />
-        {item.name}
+        {props.file.name}
       </div>
       <div className="flex items-center gap-4 text-sm text-muted-foreground">
-        {item.size}
+
+        {props.file.size}
         <button>
           <MoreVertical className="text-foreground" />
+
         </button>
       </div>
     </div>
   );
 }
 
-export function FolderRow({ item, handleOpen }: ItemRowProps) {
+export function FolderRow(props: { folder: typeof folders.$inferSelect, handleOpen: (id: number, name: string) => void }
+
+) {
   return (
     <div
-      key={item.id}
+      key={props.folder.id}
+
       className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 transition-colors hover:bg-secondary"
-      onClick={() => handleOpen(item.id, item.name)}
+      onClick={() => props.handleOpen(props.folder.id, props.folder.name)}
     >
       <div className="flex items-center gap-2">
+
         <Link
-          href={`/folder/${item.id}`}
+          href={`/folder/${props.folder.id}`}
           className="flex items-center text-gray-100 hover:text-blue-400"
         ></Link>
+
         <Folder className="text-primary" />
-        {item.name}
+        {props.folder.name}
       </div>
       <div className="flex items-center gap-4 text-sm text-muted-foreground">
-        {item.items + " items"}
+
+        {/* props.folder.items + " items" */}
         <button>
           <MoreVertical className="text-foreground" />
+
+
         </button>
       </div>
     </div>
