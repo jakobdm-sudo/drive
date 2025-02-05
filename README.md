@@ -6,9 +6,10 @@ JakoDrive is a personal cloud storage solution that I'm building to learn more a
 
 ## TODO
 
-- [ ] Database setup (SingleStore)
-- [ ] Database schema and table creation (drizzle)
-- [ ] connect UI to database (drizzle and next.js)
+- [x] Database setup (SingleStore)
+- [x] Database schema and table creation (drizzle)
+- [x] connect UI to database (drizzle and next.js)
+- [ ]  move folder open state tu URL
 - [ ] Add authentication (google oauth/clerk)
 - [ ] Add file upload (google drive api)
 - [ ] Add file management
