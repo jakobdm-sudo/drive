@@ -12,10 +12,11 @@ import {
   Upload,
   ChevronRight,
 } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState} from "react";
 import { ThemeToggle } from "~/components/theme-toggle";
 import { FileRow, FolderRow } from "./file-row";
 import type { files_table, folders_table } from "~/server/db/schema";
+import { SignInButton, SignedOut, UserButton, SignedIn } from "@clerk/nextjs";
 
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -83,6 +84,14 @@ export default function DriveContents(props: {
             <h1 className="text-2xl font-bold">My Drive</h1>
             <div className="flex items-center gap-2">
               <ThemeToggle />
+              <div>
+                <SignedOut>
+                  <SignInButton />
+                </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+              </div>
               <Button
                 name="Upload"
                 hasLogo={true}
