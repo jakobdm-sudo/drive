@@ -1,7 +1,13 @@
-import { type FileItem, type FolderItem } from "~/lib/mock-data";
 import Link from "next/link";
 import { Folder, File, MoreVertical } from "lucide-react";
 import type { files, folders } from "~/server/db/schema";
+
+function formatFileSize(size: number) {
+  if (size < 1024) {
+    return `${size} bytes`;
+  }
+  return `${(((size / 1024) / 1024)).toFixed(2)} MB`;
+}
 
 export function FileRow(props: { file: typeof files.$inferSelect }) {
   return (
@@ -19,7 +25,7 @@ export function FileRow(props: { file: typeof files.$inferSelect }) {
         {props.file.name}
       </div>
       <div className="flex items-center gap-4 text-sm text-muted-foreground">
-        {props.file.size}
+        {formatFileSize(props.file.size)}
         <button>
           <MoreVertical className="text-foreground" />
         </button>

@@ -1,74 +1,73 @@
-export type FileItem = {
-  id: number;
+export interface FileItem {
+  id: string;
   name: string;
-  type: "file";
   url: string;
   parent: string;
   size: string;
-};
+}
 
-export type FolderItem = {
-  id: number;
+export interface FolderItem {
+  id: string;
   name: string;
-  type: "folder";
-  items: number;
-  parent: string;
-};
+  parent: string | null;
+}
 
 export const mockFolders: FolderItem[] = [
-  { id: 0, name: "Root", type: "folder", items: 2, parent: "root" },
-  { id: 1, name: "Documents", type: "folder", items: 2, parent: "0" },
-  { id: 2, name: "Images", type: "folder", items: 2, parent: "0" },
-  { id: 3, name: "Vacation24", type: "folder", items: 0, parent: "2" },
+  { id: "1", name: "My Drive", parent: null },
+  { id: "2", name: "Documents", parent: "1" },
+  { id: "3", name: "Images", parent: "1" },
+  { id: "4", name: "Work", parent: "2" },
+  { id: "5", name: "Presentations", parent: "4" },
 ];
 
 export const mockFiles: FileItem[] = [
   {
-    id: 1,
-    name: "Report.pdf",
-    type: "file",
-    url: "/documents/report.pdf",
-    parent: "1",
-    size: "1.2MB",
+    id: "1",
+    name: "Resume.pdf",
+    url: "/files/resume.pdf",
+    parent: "4",
+    size: "1MB", // Will be converted to bytes
   },
   {
-    id: 2,
-    name: "Book.png",
-    type: "file",
-    url: "/documents/book.pdf",
-    parent: "1",
-    size: "8.2MB",
+    id: "2",
+    name: "Profile.jpg",
+    url: "/files/profile.jpg",
+    parent: "3",
+    size: "2MB", // Will be converted to bytes
   },
   {
-    id: 3,
-    name: "Photo2.jpg",
-    type: "file",
-    url: "/images/photo2.jpg",
+    id: "5",
+    name: "Project Proposal.docx",
+    url: "/files/proposal.docx",
     parent: "2",
-    size: "3.2MB",
+    size: "2.5 MB",
   },
   {
-    id: 4,
-    name: "Photo3.jpg",
-    type: "file",
-    url: "/images/photo3.jpg",
-    parent: "2",
-    size: "3.2MB",
+    id: "6",
+    name: "Vacation.jpg",
+    url: "/files/vacation.jpg",
+    parent: "3",
+    size: "3.7 MB",
   },
   {
-    id: 5,
-    name: "music.mp3",
-    type: "file",
-    url: "/",
-    parent: "0",
-    size: "2.2MB",
+    id: "7",
+    name: "Profile Picture.png",
+    url: "/files/profile.png",
+    parent: "3",
+    size: "1.8 MB",
   },
   {
-    id: 6,
-    name: "music2.mp3",
-    type: "file",
-    url: "/",
-    parent: "0",
-    size: "3.2MB",
+    id: "9",
+    name: "Q4 Report.pptx",
+    url: "/files/q4-report.pptx",
+    parent: "8",
+    size: "5.2 MB",
+  },
+  {
+    id: "10",
+    name: "Budget.xlsx",
+    url: "/files/budget.xlsx",
+    parent: "4",
+    size: "1.5 MB",
   },
 ];
