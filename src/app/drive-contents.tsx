@@ -15,16 +15,15 @@ import {
 import { useState, useMemo } from "react";
 import { ThemeToggle } from "~/components/theme-toggle";
 import { FileRow, FolderRow } from "./file-row";
-import type { files, folders } from "~/server/db/schema";
+import type { files_table, folders_table } from "~/server/db/schema";
 
 export default function DriveContents(props: {
-  files: typeof files.$inferSelect[];
-  folders: typeof folders.$inferSelect[];
-  parents: typeof folders.$inferSelect[];
+  files: (typeof files_table.$inferSelect)[];
+  folders: (typeof folders_table.$inferSelect)[];
+  parents: (typeof folders_table.$inferSelect)[];
 }) {
   const [currentFolder, setCurrentFolder] = useState<number>(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
 
   const handleopenSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -148,7 +147,7 @@ export default function DriveContents(props: {
           )}
           <div className="pb-6">
             <div className="flex items-center">
-             {props.parents.map((folder, index) => (
+              {props.parents.map((folder, index) => (
                 <div key={folder.id} className="flex items-center">
                   {index !== 0 && <ChevronRight className="mx-1 h-4 w-4" />}
                   <Link
@@ -168,10 +167,7 @@ export default function DriveContents(props: {
             </div>
             <ul>
               {props.folders.map((folder) => (
-                <FolderRow
-                  key={folder.id}
-                  folder={folder}
-                />
+                <FolderRow key={folder.id} folder={folder} />
               ))}
               {props.files.map((file) => (
                 <FileRow key={file.id} file={file} />

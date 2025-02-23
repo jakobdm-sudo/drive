@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { Folder, File, MoreVertical } from "lucide-react";
-import type { files, folders } from "~/server/db/schema";
+import type { files_table, folders_table } from "~/server/db/schema";
 
 function formatFileSize(size: number) {
   if (size < 1024) {
     return `${size} bytes`;
   }
-  return `${(((size / 1024) / 1024)).toFixed(2)} MB`;
+  return `${(size / 1024 / 1024).toFixed(2)} MB`;
 }
 
-export function FileRow(props: { file: typeof files.$inferSelect }) {
+export function FileRow(props: { file: typeof files_table.$inferSelect }) {
   return (
     <div
       key={props.file.id}
@@ -34,7 +34,9 @@ export function FileRow(props: { file: typeof files.$inferSelect }) {
   );
 }
 
-export function FolderRow(props: { folder: typeof folders.$inferSelect }) {
+export function FolderRow(props: {
+  folder: typeof folders_table.$inferSelect;
+}) {
   return (
     <Link
       href={`/f/${props.folder.id}`}

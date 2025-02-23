@@ -1,6 +1,6 @@
 import { db } from "~/server/db";
 import { mockFolders, mockFiles } from "~/lib/mock-data";
-import { files, folders } from "~/server/db/schema";
+import { files_table, folders_table } from "~/server/db/schema";
 import { sql } from "drizzle-orm";
 
 // Convert MB string to bytes
@@ -17,11 +17,11 @@ export default async function SandboxPage() {
     "use server";
 
     // Clear existing data
-    await db.execute(sql`TRUNCATE TABLE ${folders}`);
-    await db.execute(sql`TRUNCATE TABLE ${files}`);
+    await db.execute(sql`TRUNCATE TABLE ${folders_table}`);
+    await db.execute(sql`TRUNCATE TABLE ${files_table}`);
 
     // Insert folders
-    await db.insert(folders).values(
+    await db.insert(folders_table).values(
       mockFolders.map((folder) => ({
         id: parseInt(folder.id),
         name: folder.name,
@@ -30,7 +30,7 @@ export default async function SandboxPage() {
     );
 
     // Insert files
-    await db.insert(files).values(
+    await db.insert(files_table).values(
       mockFiles.map((file) => ({
         id: parseInt(file.id),
         name: file.name,
