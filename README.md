@@ -12,7 +12,7 @@ JakoDrive is a personal cloud storage solution that I'm building to learn more a
 - [x] move folder open state tu URL
 - [x] change folders to link components, rmove all client state
 - [ ] real homepage
-- [ ] Add authentication (google oauth/clerk)
+- [x] Add authentication (google oauth/clerk)
 - [ ] Add file upload (google drive api)
 - [ ] Add file management
 - [ ] Add file sharing
