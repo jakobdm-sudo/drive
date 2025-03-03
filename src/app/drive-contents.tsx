@@ -12,11 +12,13 @@ import {
   Upload,
   ChevronRight,
 } from "lucide-react";
-import { useState} from "react";
+import { useState } from "react";
 import { ThemeToggle } from "~/components/theme-toggle";
 import { FileRow, FolderRow } from "./file-row";
 import type { files_table, folders_table } from "~/server/db/schema";
 import { SignInButton, SignedOut, UserButton, SignedIn } from "@clerk/nextjs";
+import { UploadButton } from "@uploadthing/react";
+import { useRouter } from "next/navigation";
 
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -25,6 +27,8 @@ export default function DriveContents(props: {
 }) {
   const [currentFolder, setCurrentFolder] = useState<number>(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const navigate = useRouter();
 
   const handleopenSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -183,6 +187,12 @@ export default function DriveContents(props: {
               ))}
             </ul>
           </div>
+          <UploadButton
+            endpoint="imageUploader"
+            onClientUploadComplete={() => {
+              navigate.refresh();
+            }}
+          />
         </div>
       </div>
     </main>

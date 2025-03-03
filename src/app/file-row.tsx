@@ -13,7 +13,7 @@ export function FileRow(props: { file: typeof files_table.$inferSelect }) {
   return (
     <div
       key={props.file.id}
-      className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 transition-colors hover:bg-secondary"
+      className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md  py-2 transition-colors hover:bg-secondary"
     >
       <div className="flex items-center gap-2">
         <a
