@@ -1,7 +1,8 @@
 import { db } from "~/server/db";
 import { mockFolders, mockFiles } from "~/lib/mock-data";
 import { files_table, folders_table } from "~/server/db/schema";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
+import { auth } from "@clerk/nextjs/server";
 
 // Convert MB string to bytes
 function convertToBytes(sizeStr: string): number {
@@ -20,26 +21,41 @@ export default async function SandboxPage() {
     await db.execute(sql`TRUNCATE TABLE ${folders_table}`);
     await db.execute(sql`TRUNCATE TABLE ${files_table}`);
 
+    const user = await auth();
+
+    if (!user.userId) {
+      throw new Error("User not found");
+    }
+
+    const rootFolder = await db.insert(folders_table).values({
+      name: "Root",
+      parent: null,
+      ownerId: user.userId,
+    }).$returningId();
+
     // Insert folders
     await db.insert(folders_table).values(
       mockFolders.map((folder) => ({
-        id: parseInt(folder.id),
         name: folder.name,
-        parent: folder.parent ? parseInt(folder.parent) : null,
+        parent: rootFolder[0]!.id,
+        ownerId: user.userId,
       })),
     );
 
-    // Insert files
-    await db.insert(files_table).values(
-      mockFiles.map((file) => ({
-        id: parseInt(file.id),
-        name: file.name,
-        parent: parseInt(file.parent),
-        size: convertToBytes(file.size),
-        url: file.url,
-      })),
-    );
+    
+    console.log("rootFolder", rootFolder);
+    console.log("Database seeded successfully");
   }
+
+  const user = await auth();
+
+  if (!user.userId) {
+    throw new Error("User not found");
+  }
+
+  const folders = await db.select().from(folders_table).where(eq(folders_table.ownerId, user.userId));
+
+  console.log("folders", folders);
 
   return (
     <div className="flex flex-col gap-4">
@@ -49,7 +65,7 @@ export default async function SandboxPage() {
           type="submit"
           className="rounded bg-blue-500 px-4 py-2 text-white"
         >
-          Seed Database
+          Seed Database (Root Folder)
         </button>
       </form>
     </div>

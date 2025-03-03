@@ -12,8 +12,8 @@ JakoDrive is a personal cloud storage solution that I'm building to learn more a
 - [x] move folder open state tu URL
 - [x] change folders to link components, rmove all client state
 - [ ] real homepage
-- [x] Add authentication (google oauth/clerk)
-- [ ] Add file upload (google drive api)
+- [x] Add authentication (clerk)
+- [x] Add file upload (uploadthing)
 - [ ] Add file management
 - [ ] Add file sharing
 - [ ] Add file search
@@ -22,7 +22,6 @@ JakoDrive is a personal cloud storage solution that I'm building to learn more a
 ## Tech-Stack
 
 - [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
 - [Drizzle](https://orm.drizzle.team)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)

@@ -6,6 +6,7 @@ import {
   type DB_FolderType,
 } from "~/server/db/schema";
 import { eq } from "drizzle-orm";
+import { get } from "http";
 
 export const QUERIES = {
   getAllParents: async function getAllParents(folderId: number) {
@@ -36,6 +37,17 @@ export const QUERIES = {
   getFiles: function (filesId: number) {
     return db.select().from(filesSchema).where(eq(filesSchema.parent, filesId));
   },
+
+ getFolderById: async function getFolderById(folderId: number) {
+    const folder = await db
+      .select()
+      .from(foldersSchema)
+      .where(eq(foldersSchema.id, folderId));
+
+    return folder[0];
+
+  },
+
 };
 
 export const MUTATIONS = {
@@ -44,9 +56,14 @@ export const MUTATIONS = {
       name: string;
       size: number;
       url: string;
+      parent: number;
     };
     userId: string;
   }) {
-    return await db.insert(filesSchema).values({ ...input.file, parent: 1 });
+    return await db.insert(filesSchema).values({
+      ...input.file,
+      ownerId: input.userId,
+    });
   },
-};
+
+ };
