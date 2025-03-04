@@ -6,11 +6,13 @@ import { env } from "~/env";
 
 export function PostHogInit() {
   useEffect(() => {
-    posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
-      api_host: "/ingest",
-      ui_host: "https://us.posthog.com",
-      capture_pageview: false,
-    });
+    if (typeof window !== "undefined") {
+      posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
+        api_host: "https://jakodrive.netlify.app/ingest",
+        ui_host: "https://us.posthog.com",
+        capture_pageview: false,
+      });
+    }
   }, []);
 
   return null;
