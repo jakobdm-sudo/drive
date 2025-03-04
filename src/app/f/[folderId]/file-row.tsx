@@ -13,16 +13,20 @@ export function FileRow(props: { file: typeof files_table.$inferSelect }) {
   return (
     <div
       key={props.file.id}
-      className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md  py-2 transition-colors hover:bg-secondary"
+      className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 transition-colors hover:bg-secondary"
     >
       <div className="flex items-center gap-2">
-        <a
+      <a
           href={props.file.url}
-          className="flex items-center text-gray-100 hover:text-blue-400"
-          target="_blank" //opens in new tab
-        ></a>
-        <File className="text-muted-foreground" />
-        {props.file.name}
+          className="flex items-center gap-2 text-foreground hover:text-primary"
+          target="_blank"
+          rel="noopener noreferrer"
+          download // Add download attribute
+        >
+          <File className="text-muted-foreground" />
+          {props.file.name}
+        </a>
+        
       </div>
       <div className="flex items-center gap-4 text-sm text-muted-foreground">
         {formatFileSize(props.file.size)}

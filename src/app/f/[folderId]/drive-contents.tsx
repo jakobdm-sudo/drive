@@ -19,6 +19,7 @@ import type { files_table, folders_table } from "~/server/db/schema";
 import { SignInButton, SignedOut, UserButton, SignedIn } from "@clerk/nextjs";
 import { UploadButton } from "@uploadthing/react";
 import { useRouter } from "next/navigation";
+import type { OurFileRouter } from "~/app/api/uploadthing/core";
 
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -189,9 +190,12 @@ export default function DriveContents(props: {
             </ul>
           </div>
           <UploadButton
-            endpoint="imageUploader"
+            endpoint="driveUploader"
             onClientUploadComplete={() => {
               navigate.refresh();
+            }}
+            onUploadError={(err: Error) => {
+              console.error(err);
             }}
             input={{
               folderId: props.currentFolderId,

@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { ThemeProvider } from "~/components/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
+import { PostHogProvider } from "~/app/_providers/posthog-provider";
 
 export const metadata: Metadata = {
   title: "JakoDrive",
@@ -18,21 +19,19 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html
-        lang="en"
-        suppressHydrationWarning
-        className={`${GeistSans.variable}`}
-      >
-        <body>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
-          >
-            {children}
-          </ThemeProvider>
-        </body>
-      </html>
+      <PostHogProvider>
+        <html lang="en" suppressHydrationWarning>
+          <body className={GeistSans.variable}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem={false}
+            >
+              {children}
+            </ThemeProvider>
+          </body>
+        </html>
+      </PostHogProvider>
     </ClerkProvider>
   );
 }

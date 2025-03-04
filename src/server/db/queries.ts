@@ -9,6 +9,7 @@ import { eq } from "drizzle-orm";
 import { get } from "http";
 
 export const QUERIES = {
+
   getAllParents: async function getAllParents(folderId: number) {
     const parents = [];
     let currentId: number | null = folderId;
@@ -43,11 +44,8 @@ export const QUERIES = {
       .select()
       .from(foldersSchema)
       .where(eq(foldersSchema.id, folderId));
-
     return folder[0];
-
   },
-
 };
 
 export const MUTATIONS = {
