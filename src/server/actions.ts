@@ -7,6 +7,7 @@ import { and, eq } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { MUTATIONS } from "./db/queries";
 
 const utApi = new UTApi();
 
@@ -55,4 +56,19 @@ export async function handleLogin() {
   }
 
   return redirect("/drive");
+}
+
+export async function handleCreateDriveAction() {
+
+    const session = await auth();
+
+    if (!session.userId) {
+      return redirect("/sign-in");
+    }
+
+    const rootFolderId = await MUTATIONS.createRootFolderForUser(session.userId);
+
+    
+
+    redirect(`/f/${rootFolderId}`);
 }

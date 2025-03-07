@@ -55,12 +55,49 @@ export const QUERIES = {
     const folder = await db
       .select()
       .from(foldersSchema)
-      .where(and(eq(foldersSchema.ownerId, userId), isNull(foldersSchema.parent)));
+      .where(
+        and(eq(foldersSchema.ownerId, userId), isNull(foldersSchema.parent)),
+      );
     return folder[0];
   },
 };
 
 export const MUTATIONS = {
+  createRootFolderForUser: async function createRootFolderForUser(
+    userId: string,
+  ) {
+    const rootFolder = await db
+      .insert(foldersSchema)
+      .values({
+        name: "Root",
+        ownerId: userId,
+        parent: null,
+      })
+      .$returningId();
+
+    const rootFolderId = rootFolder[0]!.id;
+
+    await db.insert(foldersSchema).values([
+      {
+        name: "Documents",
+        ownerId: userId,
+        parent: rootFolderId,
+      },
+      {
+        name: "Trash",
+        ownerId: userId,
+        parent: rootFolderId,
+      },
+      {
+        name: "Favorites",
+        ownerId: userId,
+        parent: rootFolderId,
+      },
+      
+    ]);
+
+    return rootFolderId;
+  },
   createFile: async function createFile(input: {
     file: {
       name: string;
