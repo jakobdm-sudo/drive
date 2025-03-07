@@ -5,11 +5,10 @@ import {
   type DB_FileType,
   type DB_FolderType,
 } from "~/server/db/schema";
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { get } from "http";
 
 export const QUERIES = {
-
   getAllParents: async function getAllParents(folderId: number) {
     const parents = [];
     let currentId: number | null = folderId;
@@ -32,14 +31,19 @@ export const QUERIES = {
     return db
       .select()
       .from(foldersSchema)
-      .where(eq(foldersSchema.parent, folderId));
+      .where(eq(foldersSchema.parent, folderId))
+      .orderBy(asc(foldersSchema.id));
   },
 
   getFiles: function (filesId: number) {
-    return db.select().from(filesSchema).where(eq(filesSchema.parent, filesId));
+    return db
+      .select()
+      .from(filesSchema)
+      .where(eq(filesSchema.parent, filesId))
+      .orderBy(asc(filesSchema.id));
   },
 
- getFolderById: async function getFolderById(folderId: number) {
+  getFolderById: async function getFolderById(folderId: number) {
     const folder = await db
       .select()
       .from(foldersSchema)
@@ -63,5 +67,4 @@ export const MUTATIONS = {
       ownerId: input.userId,
     });
   },
-
- };
+};
