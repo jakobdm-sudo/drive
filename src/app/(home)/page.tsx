@@ -86,13 +86,13 @@ export default function LandingPage() {
             The secure cloud storage solution that puts your data privacy first.
             Access your files from anywhere, anytime.
           </p>
-          <div className="flex flex-col justify-center gap-4 pt-6 sm:flex-row">
-            <form action={handleLogin}>
-              <Button size="lg" className="px-8 text-lg" type="submit">
+          <div className="flex flex-col justify-center gap-4 pt-6 sm:mx-auto sm:max-w-[450px] sm:flex-row">
+            <form action={handleLogin} className="w-full sm:w-auto">
+              <Button className="w-full px-8 text-lg sm:w-auto" type="submit">
                 Get Started
               </Button>
             </form>
-            <Button size="lg" variant="outline" className="px-8 text-lg">
+            <Button variant="outline" className="w-full px-8 text-lg sm:w-auto">
               Learn More
             </Button>
           </div>

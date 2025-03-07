@@ -16,7 +16,7 @@ import { handleCreateDriveAction } from "~/server/actions"
 export default function CreateDrivePage() {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
-  const [driveName, setDriveName] = useState("")
+  const [driveName, setDriveName] = useState("My Drive")
   const router = useRouter()
 
   // Prevent hydration mismatch
@@ -26,7 +26,7 @@ export default function CreateDrivePage() {
 
   const handleCreateDrive = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await handleCreateDriveAction();
+    await handleCreateDriveAction(driveName);
   };
 
   return (

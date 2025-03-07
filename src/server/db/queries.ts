@@ -65,11 +65,12 @@ export const QUERIES = {
 export const MUTATIONS = {
   createRootFolderForUser: async function createRootFolderForUser(
     userId: string,
+    driveName: string,
   ) {
     const rootFolder = await db
       .insert(foldersSchema)
       .values({
-        name: "Root",
+        name: driveName,
         ownerId: userId,
         parent: null,
       })

@@ -81,14 +81,18 @@ export default function DriveContents(props: {
         </aside>
         <div className="w-full p-4 md:w-3/4">
           <div className="flex items-center justify-between pb-6">
-            <button
-              className="block md:hidden"
-              onClick={() => handleopenSidebar()}
-            >
-              <Menu />
-            </button>
-            <h1 className="text-2xl font-bold">My Drive</h1>
-            <div className="flex items-center gap-2">
+            <div className="flex w-1/3 md:w-auto">
+              <button
+                className="block md:hidden"
+                onClick={() => handleopenSidebar()}
+              >
+                <Menu />
+              </button>
+            </div>
+            <h1 className="w-1/3 text-center text-2xl font-bold">
+              {props.parents[props.parents.length - 1]?.name && props.parents[props.parents.length - 1]?.name !== "Root" ? props.parents[props.parents.length - 1]?.name : "My Drive"}
+            </h1>
+            <div className="flex w-1/3 items-center justify-end gap-2">
               <ThemeToggle />
               <div>
                 <SignedOut>
@@ -169,7 +173,7 @@ export default function DriveContents(props: {
               ))}
             </div>
           </div>
-          <div className="grid-row-4 grid gap-4 rounded-md bg-sidebar p-4 shadow mb-6">
+          <div className="grid-row-4 mb-6 grid gap-4 rounded-md bg-sidebar p-4 shadow">
             <div className="flex items-center justify-between px-2 text-sm text-muted-foreground">
               <p>Name</p>
               <p className="pr-8">Size</p>

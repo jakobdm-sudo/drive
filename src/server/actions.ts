@@ -58,17 +58,17 @@ export async function handleLogin() {
   return redirect("/drive");
 }
 
-export async function handleCreateDriveAction() {
+export async function handleCreateDriveAction(driveName: string) {
+  const session = await auth();
 
-    const session = await auth();
+  if (!session.userId) {
+    return redirect("/sign-in");
+  }
 
-    if (!session.userId) {
-      return redirect("/sign-in");
-    }
+  const rootFolderId = await MUTATIONS.createRootFolderForUser(
+    session.userId,
+    driveName,
+  );
 
-    const rootFolderId = await MUTATIONS.createRootFolderForUser(session.userId);
-
-    
-
-    redirect(`/f/${rootFolderId}`);
+  redirect(`/f/${rootFolderId}`);
 }
