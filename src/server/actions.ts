@@ -6,6 +6,7 @@ import { files_table } from "./db/schema";
 import { and, eq } from "drizzle-orm";
 import { UTApi } from "uploadthing/server";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const utApi = new UTApi();
 
@@ -44,4 +45,14 @@ export async function deleteFile(fileId: number) {
   c.set("force-refresh", JSON.stringify(Math.random()));
 
   return { success: true };
+}
+
+export async function handleLogin() {
+  const session = await auth();
+
+  if (!session.userId) {
+    return redirect("/sign-in");
+  }
+
+  return redirect("/drive");
 }
