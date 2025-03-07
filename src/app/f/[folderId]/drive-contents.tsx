@@ -98,12 +98,6 @@ export default function DriveContents(props: {
                   <UserButton />
                 </SignedIn>
               </div>
-              <Button
-                name="Upload"
-                hasLogo={true}
-                logo={<Upload />}
-                className="bg-primary hover:bg-primary-hover"
-              />
             </div>
           </div>
           <div
@@ -175,7 +169,7 @@ export default function DriveContents(props: {
               ))}
             </div>
           </div>
-          <div className="grid-row-4 grid gap-4 rounded-md bg-sidebar p-4 shadow">
+          <div className="grid-row-4 grid gap-4 rounded-md bg-sidebar p-4 shadow mb-6">
             <div className="flex items-center justify-between px-2 text-sm text-muted-foreground">
               <p>Name</p>
               <p className="pr-8">Size</p>
