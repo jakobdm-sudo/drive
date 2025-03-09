@@ -192,3 +192,20 @@ export async function handleCreateDriveAction(driveName: string) {
 
   redirect(`/f/${rootFolderId}`);
 }
+
+export async function handleCreateFolder(folderName: string, parentId: number) {
+  const session = await auth();
+  if (!session?.userId) {
+    return { error: "Unauthorized" };
+  }
+
+  await MUTATIONS.createFolder({
+    folder: {
+      name: folderName,
+      parent: parentId,
+    },
+    userId: session.userId,
+  });
+
+  return { success: true };
+}

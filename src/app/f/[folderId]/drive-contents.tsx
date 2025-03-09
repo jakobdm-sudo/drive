@@ -20,6 +20,7 @@ import { SignInButton, SignedOut, UserButton, SignedIn } from "@clerk/nextjs";
 import { UploadButton } from "@uploadthing/react";
 import { useRouter } from "next/navigation";
 import type { OurFileRouter } from "~/app/api/uploadthing/core";
+import ContextMenu from "~/components/context-menu";
 
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
@@ -29,11 +30,23 @@ export default function DriveContents(props: {
 }) {
   const [currentFolder, setCurrentFolder] = useState<number>(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [contextMenu, setContextMenu] = useState({
+    isOpen: false,
+    position: { x: 0, y: 0 },
+  });
 
   const navigate = useRouter();
 
   const handleopenSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setContextMenu({
+      isOpen: true,
+      position: { x: e.clientX, y: e.clientY },
+    });
   };
 
   return (
@@ -176,31 +189,44 @@ export default function DriveContents(props: {
               ))}
             </div>
           </div>
-          <div className="grid-row-4 mb-6 grid gap-4 rounded-md bg-sidebar p-4 shadow">
-            <div className="flex items-center justify-between px-2 text-sm text-muted-foreground">
-              <p>Name</p>
-              <p className="pr-8">Size</p>
+          <div
+            className="flex min-h-[calc(100vh-12rem)] flex-col"
+            onContextMenu={handleContextMenu}
+          >
+            <div className="grid-row-4 mb-6 grid gap-4 rounded-md bg-sidebar p-4 shadow">
+              <div className="flex items-center justify-between px-2 text-sm text-muted-foreground">
+                <p>Name</p>
+                <p className="pr-8">Size</p>
+              </div>
+              <ul>
+                {props.folders.map((folder) => (
+                  <FolderRow key={folder.id} folder={folder} />
+                ))}
+                {props.files.map((file) => (
+                  <FileRow key={file.id} file={file} />
+                ))}
+              </ul>
             </div>
-            <ul>
-              {props.folders.map((folder) => (
-                <FolderRow key={folder.id} folder={folder} />
-              ))}
-              {props.files.map((file) => (
-                <FileRow key={file.id} file={file} />
-              ))}
-            </ul>
+
+            <UploadButton<OurFileRouter>
+              endpoint="driveUploader"
+              onClientUploadComplete={() => {
+                navigate.refresh();
+              }}
+              onUploadError={(err: Error) => {
+                console.error(err);
+              }}
+              input={{
+                folderId: props.currentFolderId,
+              }}
+            />
           </div>
-          <UploadButton
-            endpoint="driveUploader"
-            onClientUploadComplete={() => {
-              navigate.refresh();
-            }}
-            onUploadError={(err: Error) => {
-              console.error(err);
-            }}
-            input={{
-              folderId: props.currentFolderId,
-            }}
+
+          <ContextMenu
+            currentFolderId={props.currentFolderId}
+            isOpen={contextMenu.isOpen}
+            position={contextMenu.position}
+            onClose={() => setContextMenu({ ...contextMenu, isOpen: false })}
           />
         </div>
       </div>
