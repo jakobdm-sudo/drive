@@ -28,26 +28,7 @@ export default function LandingPage() {
             <span className="text-2xl font-bold">JakoDrive</span>
           </div>
           <div className="flex items-center gap-4">
-            <nav className="hidden gap-6 md:flex">
-              <Link
-                href="#features"
-                className="text-foreground transition-colors hover:text-primary"
-              >
-                Features
-              </Link>
-              <Link
-                href="#pricing"
-                className="text-foreground transition-colors hover:text-primary"
-              >
-                Pricing
-              </Link>
-              <Link
-                href="#about"
-                className="text-foreground transition-colors hover:text-primary"
-              >
-                About
-              </Link>
-            </nav>
+         
             <div className="flex items-center gap-4">
               <form action={handleLogin}>
                 <Button variant="outline" type="submit">

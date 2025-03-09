@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Folder, File, MoreVertical } from "lucide-react";
 import type { files_table, folders_table } from "~/server/db/schema";
 import FileMenu from "~/components/file-menu";
+import FolderMenu from "~/components/folder-menu";
 import { useState } from "react";
 
 function formatFileSize(size: number) {
@@ -55,21 +56,31 @@ export function FileRow(props: { file: typeof files_table.$inferSelect }) {
 export function FolderRow(props: {
   folder: typeof folders_table.$inferSelect;
 }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
+
+  // if file is deleted, don't render the row (optimistic delete)
+  if (isDeleted) return null;
+
   return (
-    <Link
-      href={`/f/${props.folder.id}`}
-      className="flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 transition-colors hover:bg-secondary"
+    <div
+      className={`flex w-full cursor-pointer items-center justify-between gap-2 rounded-md px-2 py-2 transition-colors ${
+        isMenuOpen ? "bg-secondary" : "hover:bg-secondary"
+      }`}
     >
-      <div className="flex items-center gap-2">
+      <Link href={`/f/${props.folder.id}`} className="flex items-center gap-2">
         <Folder className="text-primary" />
         {props.folder.name}
-      </div>
+      </Link>
       <div className="flex items-center gap-4 text-sm text-muted-foreground">
         {/* props.folder.items + " items" */}
-        <button>
-          <MoreVertical className="text-foreground" />
-        </button>
+        <FolderMenu
+          folderId={props.folder.id}
+          isOpen={isMenuOpen}
+          onOpenChange={setIsMenuOpen}
+          onDelete={() => setIsDeleted(true)}
+        />
       </div>
-    </Link>
+    </div>
   );
 }

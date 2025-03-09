@@ -90,7 +90,10 @@ export default function DriveContents(props: {
               </button>
             </div>
             <h1 className="w-1/3 text-center text-2xl font-bold">
-              {props.parents[props.parents.length - 1]?.name && props.parents[props.parents.length - 1]?.name !== "Root" ? props.parents[props.parents.length - 1]?.name : "My Drive"}
+              {props.parents[props.parents.length - 1]?.name &&
+              props.parents[props.parents.length - 1]?.name !== "Root"
+                ? props.parents[props.parents.length - 1]?.name
+                : "My Drive"}
             </h1>
             <div className="flex w-1/3 items-center justify-end gap-2">
               <ThemeToggle />
