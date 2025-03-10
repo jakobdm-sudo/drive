@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Folder, File, MoreVertical } from "lucide-react";
+import { Folder, File, MoreVertical, StarIcon } from "lucide-react";
 import type { files_table, folders_table } from "~/server/db/schema";
 import FileMenu from "~/components/file-menu";
 import FolderMenu from "~/components/folder-menu";
@@ -14,9 +14,14 @@ function formatFileSize(size: number) {
   return `${(size / 1024 / 1024).toFixed(2)} MB`;
 }
 
-export function FileRow(props: { file: typeof files_table.$inferSelect }) {
+export function FileRow(props: {
+  file: typeof files_table.$inferSelect & {
+    isStarred?: boolean | null;
+  };
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [isStarred, setIsStarred] = useState(props.file.isStarred ?? false);
 
   // if file is deleted, don't render the row (optimistic delete)
   if (isDeleted) return null;
@@ -39,14 +44,17 @@ export function FileRow(props: { file: typeof files_table.$inferSelect }) {
           <File className="text-muted-foreground" />
           {props.file.name}
         </a>
+        {isStarred && <StarIcon className="h-4 w-4 fill-yellow-500" />}
       </div>
       <div className="flex items-center gap-4 text-sm text-muted-foreground">
         {formatFileSize(props.file.size)}
         <FileMenu
+          file={props.file}
           fileId={props.file.id}
           isOpen={isMenuOpen}
           onOpenChange={setIsMenuOpen}
           onDelete={() => setIsDeleted(true)}
+          onStarToggle={() => setIsStarred(!isStarred)}
         />
       </div>
     </div>

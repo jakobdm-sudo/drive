@@ -5,7 +5,7 @@ import {
   type DB_FileType,
   type DB_FolderType,
 } from "~/server/db/schema";
-import { and, asc, eq, isNull } from "drizzle-orm";
+import { and, asc, desc, eq, isNull } from "drizzle-orm";
 import { get } from "http";
 
 export const QUERIES = {
@@ -59,6 +59,21 @@ export const QUERIES = {
         and(eq(foldersSchema.ownerId, userId), isNull(foldersSchema.parent)),
       );
     return folder[0];
+  },
+  getStarredFiles: async function getStarredFiles(userId: string) {
+    const files = await db
+      .select()
+      .from(filesSchema)
+      .where(and(eq(filesSchema.ownerId, userId), eq(filesSchema.isStarred, true)));
+    return files;
+  },
+  getRecentFiles: async function getRecentFiles(userId: string) {
+    const files = await db
+      .select()
+      .from(filesSchema)
+      .where(eq(filesSchema.ownerId, userId))
+      .orderBy(desc(filesSchema.createdAt));
+    return files;
   },
 };
 

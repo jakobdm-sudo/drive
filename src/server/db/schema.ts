@@ -7,6 +7,7 @@ import {
   singlestoreTableCreator,
   bigint,
   timestamp,
+  boolean,
 } from "drizzle-orm/singlestore-core";
 
 /**
@@ -31,6 +32,7 @@ export const files_table = createTable(
     url: text("url").notNull(),
     parent: bigint("parent", { mode: "number", unsigned: true }).notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
+    isStarred: boolean("is_starred").default(false),
   },
   (t) => {
     return [

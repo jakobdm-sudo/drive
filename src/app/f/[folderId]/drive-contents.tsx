@@ -21,12 +21,16 @@ import { UploadButton } from "@uploadthing/react";
 import { useRouter } from "next/navigation";
 import type { OurFileRouter } from "~/app/api/uploadthing/core";
 import ContextMenu from "~/components/context-menu";
+import { QUERIES } from "~/server/db/queries";
 
 export default function DriveContents(props: {
   files: (typeof files_table.$inferSelect)[];
   folders: (typeof folders_table.$inferSelect)[];
   parents: (typeof folders_table.$inferSelect)[];
+  starredFiles: (typeof files_table.$inferSelect)[];
+  recentFiles: (typeof files_table.$inferSelect)[];
   currentFolderId: number;
+  view?: "all" | "starred" | "recent";
 }) {
   const [currentFolder, setCurrentFolder] = useState<number>(1);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -62,17 +66,17 @@ export default function DriveContents(props: {
             />
             <nav className="flex flex-col gap-4 space-y-6">
               <Link
-                href="#"
+                href={`/f/${props.parents[props.parents.length - 1]?.id}`}
                 className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
               >
                 <Home />
                 <span>Home</span>
               </Link>
               <Link
-                href="#"
+                href={`/f/${props.currentFolderId}/favourites`}
                 className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
               >
-                <Star />
+                <Star className={`h-4 w-4`} />
                 <span>Starred</span>
               </Link>
               <Link
@@ -138,17 +142,17 @@ export default function DriveContents(props: {
               />
               <nav className="flex flex-col gap-4">
                 <Link
-                  href="#"
+                  href={`/f/${props.parents[props.parents.length - 1]?.id}`}
                   className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
                 >
                   <Home />
                   <span>Home</span>
                 </Link>
                 <Link
-                  href="#"
+                  href={`/f/${props.currentFolderId}/favourites`}
                   className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
                 >
-                  <Star />
+                  <Star className={`h-4 w-4`} />
                   <span>Starred</span>
                 </Link>
                 <Link
@@ -199,12 +203,17 @@ export default function DriveContents(props: {
                 <p className="pr-8">Size</p>
               </div>
               <ul>
-                {props.folders.map((folder) => (
-                  <FolderRow key={folder.id} folder={folder} />
-                ))}
-                {props.files.map((file) => (
-                  <FileRow key={file.id} file={file} />
-                ))}
+                {props.view !== "starred" &&
+                  props.folders.map((folder) => (
+                    <FolderRow key={folder.id} folder={folder} />
+                  ))}
+                {props.view === "starred"
+                  ? props.starredFiles.map((file) => (
+                      <FileRow key={file.id} file={file} />
+                    ))
+                  : props.files.map((file) => (
+                      <FileRow key={file.id} file={file} />
+                    ))}
               </ul>
             </div>
 

@@ -209,3 +209,31 @@ export async function handleCreateFolder(folderName: string, parentId: number) {
 
   return { success: true };
 }
+
+export async function toggleStarStatus(fileId: number) {
+  const session = await auth();
+  if (!session?.userId) {
+    return { error: "Unauthorized" };
+  }
+
+  const [file] = await db
+    .select()
+    .from(files_table)
+    .where(
+      and(
+        eq(files_table.id, fileId),
+        eq(files_table.ownerId, session.userId),
+      ),
+    );
+
+  if (!file) {
+    return { error: "File not found" };
+  }
+
+  await db
+    .update(files_table)
+    .set({ isStarred: !file.isStarred })
+    .where(eq(files_table.id, fileId));
+
+  return { success: true }; 
+}

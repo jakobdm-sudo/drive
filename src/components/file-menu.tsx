@@ -1,15 +1,18 @@
 "use client";
 
 import { DownloadIcon, MoreVertical, StarIcon, Trash2Icon } from "lucide-react";
-import { deleteFile } from "~/server/actions";
+import { deleteFile, toggleStarStatus } from "~/server/actions";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { files_table } from "~/server/db/schema";
 
 export default function FileMenu(props: {
   fileId: number;
   isOpen: boolean;
+  file: typeof files_table.$inferSelect;
   onOpenChange: (open: boolean) => void;
   onDelete: () => void;
+  onStarToggle: () => void;
 }) {
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -38,6 +41,12 @@ export default function FileMenu(props: {
     router.refresh();
   };
 
+  const handleStar = async () => {
+    await toggleStarStatus(props.fileId);
+    props.onStarToggle();
+    router.refresh();
+  };
+
   return (
     <div className="relative" ref={menuRef}>
       <button onClick={() => props.onOpenChange(!props.isOpen)}>
@@ -60,7 +69,12 @@ export default function FileMenu(props: {
         <button className="group flex items-center justify-between gap-2 hover:text-primary">
           Download <DownloadIcon className="h-4 w-4 group-hover:fill-primary" />
         </button>
-        <button className="group flex items-center justify-between gap-2 hover:text-yellow-500">
+        <button
+          className={`group flex items-center justify-between gap-2 ${
+            props.file.isStarred ? "text-yellow-500" : "hover:text-yellow-500"
+          }`}
+          onClick={handleStar}
+        >
           Favorite <StarIcon className="h-4 w-4 group-hover:fill-yellow-500" />
         </button>
       </div>

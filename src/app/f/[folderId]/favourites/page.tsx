@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import DriveContents from "./drive-contents";
+import DriveContents from "../drive-contents";
 import { QUERIES } from "~/server/db/queries";
 
 export default async function GoogleDriveClone(props: {
@@ -18,21 +18,21 @@ export default async function GoogleDriveClone(props: {
     return <div>Invalid folder ID</div>;
   }
 
-  const [folders, files, parents] = await Promise.all([
-    QUERIES.getFolders(parsedFolderId),
+  const [files, parents, starredFiles] = await Promise.all([
     QUERIES.getFiles(parsedFolderId),
     QUERIES.getAllParents(parsedFolderId),
+    QUERIES.getStarredFiles(session.userId),
   ]);
 
   return (
     <DriveContents
       files={files}
-      folders={folders}
+      folders={[]}
       parents={parents}
       currentFolderId={parsedFolderId}
-      starredFiles={[]}
+      starredFiles={starredFiles}
       recentFiles={[]}
-      view="all"
+      view="starred"
     />
   );
 }
