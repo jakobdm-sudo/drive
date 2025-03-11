@@ -72,7 +72,8 @@ export const QUERIES = {
       .select()
       .from(filesSchema)
       .where(eq(filesSchema.ownerId, userId))
-      .orderBy(desc(filesSchema.createdAt));
+      .orderBy(desc(filesSchema.createdAt))
+      .limit(10);
     return files;
   },
 };

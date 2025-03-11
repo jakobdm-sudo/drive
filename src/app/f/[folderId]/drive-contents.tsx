@@ -80,7 +80,7 @@ export default function DriveContents(props: {
                 <span>Starred</span>
               </Link>
               <Link
-                href="#"
+                href={`/f/${props.currentFolderId}/recent`}
                 className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
               >
                 <Clock />
@@ -156,7 +156,7 @@ export default function DriveContents(props: {
                   <span>Starred</span>
                 </Link>
                 <Link
-                  href="#"
+                  href={`/f/${props.currentFolderId}/recent`}
                   className="flex items-center gap-2 rounded-md px-2 py-3 text-sm transition-colors hover:bg-secondary"
                 >
                   <Clock />
@@ -203,17 +203,24 @@ export default function DriveContents(props: {
                 <p className="pr-8">Size</p>
               </div>
               <ul>
-                {props.view !== "starred" &&
-                  props.folders.map((folder) => (
-                    <FolderRow key={folder.id} folder={folder} />
-                  ))}
-                {props.view === "starred"
-                  ? props.starredFiles.map((file) => (
-                      <FileRow key={file.id} file={file} />
-                    ))
-                  : props.files.map((file) => (
+                {props.view === "starred" ? (
+                  props.starredFiles.map((file) => (
+                    <FileRow key={file.id} file={file} />
+                  ))
+                ) : props.view === "recent" ? (
+                  props.recentFiles.map((file) => (
+                    <FileRow key={file.id} file={file} />
+                  ))
+                ) : (
+                  <>
+                    {props.folders.map((folder) => (
+                      <FolderRow key={folder.id} folder={folder} />
+                    ))}
+                    {props.files.map((file) => (
                       <FileRow key={file.id} file={file} />
                     ))}
+                  </>
+                )}
               </ul>
             </div>
 
