@@ -98,7 +98,7 @@ export default function DriveContents(props: {
         </aside>
         <div className="w-full p-4 md:w-3/4">
           <div className="flex items-center justify-between pb-6">
-            <div className="flex w-1/3 md:w-auto">
+            <div className="flex w-20 md:w-auto">
               <button
                 className="block md:hidden"
                 onClick={() => handleopenSidebar()}
@@ -106,13 +106,13 @@ export default function DriveContents(props: {
                 <Menu />
               </button>
             </div>
-            <h1 className="w-1/3 text-center text-2xl font-bold">
+            <h1 className="flex-1 text-center text-2xl font-bold">
               {props.parents[props.parents.length - 1]?.name &&
               props.parents[props.parents.length - 1]?.name !== "Root"
                 ? props.parents[props.parents.length - 1]?.name
                 : "My Drive"}
             </h1>
-            <div className="flex w-1/3 items-center justify-end gap-2">
+            <div className="flex w-20 items-center justify-end gap-2">
               <ThemeToggle />
               <div>
                 <SignedOut>

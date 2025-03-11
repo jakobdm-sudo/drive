@@ -4,8 +4,10 @@
 Developed a scalable cloud storage solution that enables users to securely store, organize, and manage their files in the cloud. The solution uses a modern, type-safe tech stack for efficient file management, featuring real-time updates and seamless file organization.
 
 ## 🌐 Live Demo
-[https://jakodrive.netlify.app/](https://jakodrive.netlify.app/)  
-![Demo](./screenshots/demo_gif.gif)
+try out here: [https://jakodrive.netlify.app/](https://jakodrive.netlify.app/) 
+
+
+![Demo](./screenshots/demo.gif)
 
 ## ✨ Features
 
